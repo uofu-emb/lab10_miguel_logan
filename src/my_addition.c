@@ -12,7 +12,9 @@ void run_blink_task(int *count, bool *led_state, int *max_iterations){
     while (iteration < *max_iterations) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (*led_state));
         if ((*count)++ % 11) (*led_state) = !(*led_state);
-        vTaskDelay(50);
+        vTaskDelay(500);
         iteration++;  // Increment the loop counter
+	printf("current iterations passed: %d\n", iteration);
+	
     }
 }
