@@ -46,6 +46,10 @@ add_compile_definitions(
 
 # This is where your project header files are located.
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
+# Pull in PICO SDK (must be before project)
+include(pico_sdk_import.cmake)
+# We also need PICO EXTRAS
+include(pico_extras_import.cmake)
 
 # The main executable is defined inside the src directory.
 add_subdirectory(src)
