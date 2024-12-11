@@ -56,6 +56,4 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}
         shell: bash
-        run: |
-          find / -name "unity_checker.py"
-          python3 /usr/local/share/pico/unity_checker.py
+        run: python3 /usr/local/share/pico/unity_checker.py
