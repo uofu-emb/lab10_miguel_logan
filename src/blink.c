@@ -16,32 +16,43 @@
 #include "my_addition.h"
 
 int count = 0;
-bool led_state = false;
+int led_state = 0;
+const uint LED_PIN = 0;
+
+
 
 #define MAIN_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
 #define BLINK_TASK_PRIORITY     ( tskIDLE_PRIORITY + 2UL )
 #define MAIN_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
 #define BLINK_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
 
-void blink_task(__unused void *params) {
-    hard_assert(cyw43_arch_init() == PICO_OK);
-    int max_iterations = 1000000;
-    run_blink_task(&count, &led_state, &max_iterations);
+
+
+void blink_task_sleep(__unused void *params) {
+  while (1) {
+    led_state = !led_state;
+    gpio_put(LED_PIN, led_state);
+    sleep_ms(500);
+  }
+}
+
+void blink_task_thread(__unused void *params) {
+  while (1) {
+    led_state = !led_state;
+    gpio_put(LED_PIN, led_state);
+    vTaskDelay(500);
+  }
 }
 
 void main_task(__unused void *params) {
-    xTaskCreate(blink_task, "BlinkThread",
+    xTaskCreate(blink_task_thread, "BlinkThread",
                 BLINK_TASK_STACK_SIZE, NULL, BLINK_TASK_PRIORITY, NULL);
-    char c;
-    while(c = getchar()) {
-        if (c <= 'z' && c >= 'a') putchar(c - 32);
-        else if (c >= 'A' && c <= 'Z') putchar(c + 32);
-        else putchar(c);
-    }
 }
 
 int main( void )
 {
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
     stdio_init_all();
     const char *rtos_name;
     rtos_name = "FreeRTOS";
