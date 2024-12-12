@@ -15,6 +15,10 @@
 
 #include "my_addition.h"
 
+
+#pragma GCC optimize ("O0")
+
+
 int count = 0;
 int led_state = 0;
 const uint LED_PIN = 0;
@@ -44,6 +48,18 @@ void blink_task_thread(__unused void *params) {
   }
 }
 
+
+void spammy_loop(__unused void *params) {
+  while(1) {
+    uint32_t k;
+    for (int i = 0; i < 30; i = i + 1) {
+      uint32_t j = 0;
+      j = ((~j >> i) + 1) * 27644437;
+      k = j;
+    }
+  }
+}
+
 void main_task(__unused void *params) {
     xTaskCreate(blink_task_thread, "BlinkThread",
                 BLINK_TASK_STACK_SIZE, NULL, BLINK_TASK_PRIORITY, NULL);
@@ -53,12 +69,14 @@ int main( void )
 {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
-    stdio_init_all();
-    const char *rtos_name;
-    rtos_name = "FreeRTOS";
-    TaskHandle_t task;
-    xTaskCreate(main_task, "MainThread",
-                MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
-    vTaskStartScheduler();
-    return 0;
+    //blink_task_sleep(1);
+    spammy_loop(1);
+    /* stdio_init_all(); */
+    /* const char *rtos_name; */
+    /* rtos_name = "FreeRTOS"; */
+    /* TaskHandle_t task; */
+    /* xTaskCreate(blink_task_thread, "MainThread", */
+    /*             MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task); */
+    /* vTaskStartScheduler(); */
+    /* return 0; */
 }
