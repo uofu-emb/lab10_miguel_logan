@@ -10,6 +10,3 @@
     shallow = true
     branch = V11.1.0
     ignore = dirty
-[submodule "lib/pico-extras"]
-	path = lib/pico-extras
-	url = https://github.com/raspberrypi/pico-extras.git
