@@ -25,7 +25,7 @@ bool led_state = false;
 
 void blink_task(__unused void *params) {
     hard_assert(cyw43_arch_init() == PICO_OK);
-    int max_iterations = 10;
+    int max_iterations = 100000;
     run_blink_task(&count, &led_state, &max_iterations);
 }
 

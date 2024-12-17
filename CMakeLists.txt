@@ -14,7 +14,14 @@ elseif(DEFINED ENV{PICO_SDK_PATH})
 else()
     set(PICO_SDK_PATH lib/pico-sdk)
 endif()
-# ====================================================================================
+if(DEFINED ENV{PICO_EXTRAS_PATH})
+    set(PICO_EXTRAS_PATH $ENV{PICO_EXTRAS_PATH})
+else()
+    set(PICO_EXTRAS_PATH ${CMAKE_CURRENT_LIST_DIR}/lib/pico-extras)
+endif()
+
+#====================================================================================
+
 cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_C_STANDARD 11)
@@ -26,6 +33,7 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # This imports the Pico SDK (must be included before the project)
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
+include(${PICO_EXTRAS_PATH}/external/pico_extras_import.cmake)
 
 # This imports the library configuration for FreeRTOS
 include(lib/freertos/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
@@ -46,6 +54,8 @@ add_compile_definitions(
 
 # This is where your project header files are located.
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
+# We also need PICO EXTRAS
+# include(${PICO_EXTRAS_PATH}/external/pico_extras_import.cmake)
 
 # The main executable is defined inside the src directory.
 add_subdirectory(src)

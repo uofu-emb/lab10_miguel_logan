@@ -25,8 +25,10 @@ void test_multiplication(void)
 int main (void)
 {
     stdio_init_all();
+    sleep_ms(5000);
     UNITY_BEGIN();
     RUN_TEST(test_variable_assignment);
     RUN_TEST(test_multiplication);
+    sleep_ms(5000);
     return UNITY_END();
 }

@@ -45,3 +45,28 @@ endif()
 
 # Another pico macro which generates the uf2 file in addition to the elf
 pico_add_extra_outputs(myproject)
+
+add_executable(hello_sleep_alarm
+        hello_sleep_alarm.c
+)
+target_link_libraries(hello_sleep_alarm
+        pico_stdlib
+        hardware_sleep
+        hardware_gpio  # Often needed alongside sleep
+)
+pico_enable_stdio_usb(hello_sleep_alarm 1)   # Enable USB stdio if needed
+pico_enable_stdio_uart(hello_sleep_alarm 0)  # Enable UART stdio if needed
+pico_add_extra_outputs(hello_sleep_alarm)
+
+
+add_executable(hello_dormant
+        hello_dormant.c
+)
+target_link_libraries(hello_dormant
+        pico_stdlib
+        hardware_sleep
+        hardware_gpio  # Often needed alongside sleep
+)
+pico_enable_stdio_usb(hello_dormant 1)   # Enable USB stdio if needed
+pico_enable_stdio_uart(hello_dormant 0)  # Enable UART stdio if needed
+pico_add_extra_outputs(hello_dormant)
